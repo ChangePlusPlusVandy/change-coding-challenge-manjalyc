@@ -56,8 +56,8 @@ class Twitter_OAuth_Session:
     # returns None
     def init_oauth_session(self):
         self.oauth_session = OAuth1Session(
-            client_key, 
-            client_secret=client_secret, 
+            self.client_key, 
+            client_secret=self.client_secret, 
             callback_uri='oob') #we have no callback uri as we are not hosting a local or public server so we provide the expected out of bounds (oob) value 
     
     # Step 1

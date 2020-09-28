@@ -51,7 +51,7 @@ class Twitter_OAuth_Session:
         #Step 3: Get Access Tokens for this Session
         self.fetch_access_token()
 
-    # Step 0
+
     # Initializes Client Varibles in self.oauth_session
     # returns None
     def init_oauth_session(self):
@@ -59,15 +59,13 @@ class Twitter_OAuth_Session:
             self.client_key, 
             client_secret=self.client_secret, 
             callback_uri='oob') #we have no callback uri as we are not hosting a local or public server so we provide the expected out of bounds (oob) value 
-    
-    # Step 1
+
     # Populates 'oauth_token', 'oauth_token_secret', 'oauth_callback_confirmed' in oauth_request
     # Actually, this method technically also updates the oauth_session but we will just reinitiate the oauth_session variable for clarity
     # returns None
     def fetch_request_token(self):
         self.oauth_request = self.oauth_session.fetch_request_token(self.request_token_url)
     
-    # Step 2
     # Manual Step, Prompts user for authorization, populates 'oauth_verifier' in oauth_request with user-provided PIN
     # As we do not callback (lack of local/public server), we simply reinitiate the oauth_session using the PIN as our verifier instead of passing the verifier to the current oauth_session
     # returns None
@@ -93,23 +91,21 @@ class Twitter_OAuth_Session:
             verifier = self.oauth_request['oauth_verifier'], 
             signature_method="HMAC-SHA1")
     
-    # Step 3
     # Populates 'oauth_token' & 'oauth_token_secret' in oauth_access, updates oauth_session with these variables internally
     # returns None
     def fetch_access_token(self):
         self.oauth_access = self.oauth_session.fetch_access_token(self.access_token_url)
     
-    # This is how information can be pulled or posted during a session
+    # This is how information can be pulled or posted during a session: intercepts the default request to inject authorization headers
     # method: typically 'GET' or 'POST'
     # url: designated endpoint
-    # returns: 
+    # returns: a response object
     def request(self, method, url, data=None, headers=None):
         return self.oauth_session.request(method, url, data=data, headers=headers)
 
 
 # twitter_oauth_session: any authenticated Twitter_OAuth_Session()
 # screen_name: the target user's whose historical tweets you want to pull
-#   - ex: kanyewest
 # n: the max number of tweets you want to pull
 # returns a list of the target user's latest tweets whose length is between 0 and n
 #   - filtered to skip unoriginal tweets (retweets or replies) and tweets with user tags in it
@@ -155,7 +151,7 @@ if __name__ == "__main__":
     id2 = input('Please enter the handle of a second twitter user: ')
 
     # Load the past 3200 tweets
-    print(f'\nLoading the first 3200 tweets from {id1} & {id2}...')
+    print(f'\nLoading the latest <=3200 tweets from {id1} & {id2}...')
     id1_tweets = get_last_n_filtered_tweets(twitter_oauth_session, id1, 3200)
     id2_tweets = get_last_n_filtered_tweets(twitter_oauth_session, id2, 3200)
 

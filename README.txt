@@ -19,7 +19,7 @@ Tips & Troubleshooting:
 
 3. Not having to type in your client key and secret every time:
     a. Open up twitter-game.py
-    b. Change the following lines (line 8 & 9) from:
+    b. Change the following lines (line 9 & 10) from:
         > client_key = input('Please Enter Your Client Key (available in your developer portal as API Key): ')
         > client_secret = input('Please Enter Your Client Secret (available in your developer portal as API Key Secret): ')
         to
